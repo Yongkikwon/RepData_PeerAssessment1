@@ -1,25 +1,103 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
 output: 
-  html_document: 
+ html_document: 
     keep_md: true
 ---
 
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
 ## Loading and preprocessing the data
+# 1.Load the data (i.e. read.csv())
+# 2. 2.Process/transform the data (if necessary) into a format suitable for your analysis
+unzip the data file and then read data file
+```{r Loading and preprocessing the data, results=FALSE}
+unzip("activity.zip", file=NULL, list=FALSE, overwrite=TRUE)  
+REPW1Data <- read.csv("activity.csv")
+library(dplyr)
+REPW1Data_df <- tbl_df(REPW1Data)
+REPW1Data_df_group_By_Date <- group_by(REPW1Data_df, date)
+REPW1Data_df_Sum_By_Date <- summarize(REPW1Data_df_group_By_Date, steps=sum(steps))
+```
 
-
-
+  
 ## What is mean total number of steps taken per day?
+#1.Calculate the total number of steps taken per day
+#2.If you do not understand the difference between a histogram and a barplot, research the difference between them. Make a histogram of the total number of steps taken each day
+```{r hist, fig.height=4}
+hist(REPW1Data_df_Sum_By_Date$steps, col="gray", ylab="Days", xlab="Steps", main="Total Number Of Steps Taken Per Day")
+rug(REPW1Data_df_Sum_By_Date$steps)
+```
 
+#3.Calculate and report the mean and median of the total number of steps taken per day
+```{r mean and median total}
+mean(REPW1Data_df_Sum_By_Date$steps, na.rm=TRUE)
+median(REPW1Data_df_Sum_By_Date$steps, na.rm=TRUE)
+```
 
 
 ## What is the average daily activity pattern?
+#1.Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
+```{r average daily activity pattern}
+library(ggplot2)
+REPW1Data_df_group_By_Time <- group_by(REPW1Data_df, interval)
+REPW1Data_df_Mean_By_Time <- summarize(REPW1Data_df_group_By_Time, steps=mean(steps,na.rm=TRUE))
+ggplot(REPW1Data_df_Mean_By_Time, aes(interval, steps)) + geom_line() + labs(title = "Time series plot of the average number of steps taken", x="Time Series", y="Average Number Of Stpes")
+```
 
-
+#2.The 5-minute interval that, on average, contains the maximum number of steps 
+```{r}
+REPW1Data_df_Mean_By_Time[which.max(REPW1Data_df_Mean_By_Time$steps),]    
+```
 
 ## Imputing missing values
+# 1.Calculate and report the total number of missing values in the dataset
+```{r Calculate total missing values}
+    nrow(REPW1Data_df[is.na(REPW1Data_df$steps),])
+```
+# 2.Devise a strategy for filling in all of the missing values in the dataset.
+  replace to NA value with mean steps in that time
+  
+# 3.Create a new dataset that is equal to the original dataset but with the missing data filled in.
+```{r imputation missing values}
+NewImputedTbl <- data.frame()
+for(i in 1:nrow(REPW1Data_df)){
+    valSteps <- REPW1Data_df[i,]
+    if(is.na(valSteps$steps)) {
+        NewImputedTbl[i,c("steps")] <-subset(REPW1Data_df_Mean_By_Time,interval==valSteps$interval, select="steps")}
+    else{
+        NewImputedTbl[i, c("steps")] <- valSteps[,"steps"]
+        }
+}
 
+REPW1Data_df_Imputted <- REPW1Data_df
+REPW1Data_df_Imputted$steps <-NewImputedTbl$steps
+```
+
+# 4.Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day.
+```{r original & imputted data histogram}
+par(mfrow=c(2,1))
+# Create Total number of Steps Histogram(Original)
+REPW1Data_df_Sum_By_Date <- summarize(REPW1Data_df_group_By_Date, steps=sum(steps))
+hist(REPW1Data_df_Sum_By_Date$steps, col="gray", ylab="Days", xlab="Steps", main="Mean Number Of Steps Taken Per Day")
+rug(REPW1Data_df_Sum_By_Date$steps)
+
+# Create Total number of Steps Histogram(Imputing missing values)
+REPW1Data_df_Imputted_group_By_Date <- group_by(REPW1Data_df_Imputted, date)
+REPW1Data_df_Imputted_Sum_By_Date <- summarize(REPW1Data_df_Imputted_group_By_Date, steps=sum(steps))
+hist(REPW1Data_df_Imputted_Sum_By_Date$steps, col="gray", ylab="Days", xlab="Steps", main="Mean Number Of Steps Taken Per Day(Imputing missing values)")
+rug(REPW1Data_df_Imputted_Sum_By_Date$steps)
+```
+
+# Mean and Median value of the imputted data
+```{r compae mean and median number}
+mean(REPW1Data_df_Imputted_Sum_By_Date$steps, na.rm=TRUE)
+median(REPW1Data_df_Imputted_Sum_By_Date$steps, na.rm=TRUE)
+```
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
