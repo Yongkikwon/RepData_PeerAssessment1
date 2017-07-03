@@ -1,18 +1,9 @@
 # Reproducible Research: Peer Assessment 1
-
-
-
-
+  
 ## Loading and preprocessing the data
  1.Load the data (i.e. read.csv())
  2. 2.Process/transform the data (if necessary) into a format suitable for your analysis
 unzip the data file and then read data file
-
-```r
-unzip("activity.zip", file=NULL, list=FALSE, overwrite=TRUE)  
-REPW1Data <- read.csv("activity.csv")
-library(dplyr)
-```
 
 ```
 ## 
@@ -29,12 +20,6 @@ library(dplyr)
 ## The following objects are masked from 'package:base':
 ## 
 ##     intersect, setdiff, setequal, union
-```
-
-```r
-REPW1Data_df <- tbl_df(REPW1Data)
-REPW1Data_df_group_By_Date <- group_by(REPW1Data_df, date)
-REPW1Data_df_Sum_By_Date <- summarize(REPW1Data_df_group_By_Date, steps=sum(steps))
 ```
 
   
@@ -78,7 +63,7 @@ REPW1Data_df_Mean_By_Time <- summarize(REPW1Data_df_group_By_Time, steps=mean(st
 ggplot(REPW1Data_df_Mean_By_Time, aes(interval, steps)) + geom_line() + labs(title = "Time series plot of the average number of steps taken", x="Time Series", y="Average Number Of Stpes")
 ```
 
-![](PA1_template_files/figure-html/average daily activity pattern-1.png)<!-- -->
+![](PA1_template_files/figure-html/average-1.png)<!-- -->
 
 2.The 5-minute interval that, on average, contains the maximum number of steps 
 
@@ -139,7 +124,7 @@ hist(REPW1Data_df_Imputted_Sum_By_Date$steps, col="gray", ylab="Days", xlab="Ste
 rug(REPW1Data_df_Imputted_Sum_By_Date$steps)
 ```
 
-![](PA1_template_files/figure-html/original & imputted data histogram-1.png)<!-- -->
+![](PA1_template_files/figure-html/originalANDimputted_histogram-1.png)<!-- -->
 
 4-1 report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment?
    : mean value is same with first part value, but median value has changed.
@@ -182,5 +167,5 @@ par(mfrow=c(2,1))
 ggplot(REPW1Data_df_Add_DayType_Mean_by_time, aes(interval, steps)) + geom_line() + facet_grid(DayType ~ .) + labs(title = "Time series plot of the average number of steps taken", x="Time Series", y="Average Number Of Stpes")
 ```
 
-![](PA1_template_files/figure-html/compare with Weekend and weekday-1.png)<!-- -->
+![](PA1_template_files/figure-html/Weekendandweekday-1.png)<!-- -->
 

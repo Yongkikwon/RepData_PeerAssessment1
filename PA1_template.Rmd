@@ -1,12 +1,15 @@
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
+---
+title: "Reproducible Research: Peer Assessment 1"
+output: 
+  html_document:
+    keep_md: true
+---
+  
 ## Loading and preprocessing the data
  1.Load the data (i.e. read.csv())
  2. 2.Process/transform the data (if necessary) into a format suitable for your analysis
 unzip the data file and then read data file
-```{r Loading and preprocessing the data, results=FALSE}
+```{r Loading and preprocessing the data, results=FALSE, echo=FALSE}
 unzip("activity.zip", file=NULL, list=FALSE, overwrite=TRUE)  
 REPW1Data <- read.csv("activity.csv")
 library(dplyr)
@@ -33,7 +36,7 @@ median(REPW1Data_df_Sum_By_Date$steps, na.rm=TRUE)
 
 ## What is the average daily activity pattern?
 1.Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
-```{r averageDailyActivityPattern}
+```{r average}
 library(ggplot2)
 REPW1Data_df_group_By_Time <- group_by(REPW1Data_df, interval)
 REPW1Data_df_Mean_By_Time <- summarize(REPW1Data_df_group_By_Time, steps=mean(steps,na.rm=TRUE))
