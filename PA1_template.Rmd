@@ -33,7 +33,7 @@ median(REPW1Data_df_Sum_By_Date$steps, na.rm=TRUE)
 
 ## What is the average daily activity pattern?
 1.Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
-```{r average daily activity pattern}
+```{r averageDailyActivityPattern}
 library(ggplot2)
 REPW1Data_df_group_By_Time <- group_by(REPW1Data_df, interval)
 REPW1Data_df_Mean_By_Time <- summarize(REPW1Data_df_group_By_Time, steps=mean(steps,na.rm=TRUE))
@@ -70,7 +70,7 @@ REPW1Data_df_Imputted$steps <-NewImputedTbl$steps
 ```
 
 4.Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day.
-```{r original & imputted data histogram}
+```{r originalANDimputted_histogram}
 par(mfrow=c(1,2))
 # Create Total number of Steps Histogram(Original)
 REPW1Data_df_Sum_By_Date <- summarize(REPW1Data_df_group_By_Date, steps=sum(steps))
@@ -102,7 +102,7 @@ REPW1Data_df_Add_DayType$DayType <- as.factor(REPW1Data_df_Add_DayType$DayType)
 ```
 
 2.Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). See the README file in the GitHub repository to see an example of what this plot should look like using simulated data.
-```{R compare with Weekend and weekday}
+```{R Weekendandweekday}
 # group by interval
 REPW1Data_df_Add_DayType_by_time <- group_by(REPW1Data_df_Add_DayType, interval, DayType)
 REPW1Data_df_Add_DayType_Mean_by_time <- summarize(REPW1Data_df_Add_DayType_by_time, steps=mean(steps,na.rm=TRUE))
