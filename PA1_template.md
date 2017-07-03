@@ -126,8 +126,9 @@ rug(REPW1Data_df_Imputted_Sum_By_Date$steps)
 
 ![](PA1_template_files/figure-html/originalANDimputted_histogram-1.png)<!-- -->
 
-4-1 report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment?
-   : mean value is same with first part value, but median value has changed.
+4-1 report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment?  
+
+Answer:mean value is same with first part value, but median value has changed.
 
 ```r
 mean(REPW1Data_df_Imputted_Sum_By_Date$steps, na.rm=TRUE)

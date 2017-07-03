@@ -87,8 +87,9 @@ hist(REPW1Data_df_Imputted_Sum_By_Date$steps, col="gray", ylab="Days", xlab="Ste
 rug(REPW1Data_df_Imputted_Sum_By_Date$steps)
 ```
 
-4-1 report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment?
-   : mean value is same with first part value, but median value has changed.
+4-1 report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment?  
+
+Answer : mean value is same with first part value, but median value has changed.
 ```{r compae mean and median number}
 mean(REPW1Data_df_Imputted_Sum_By_Date$steps, na.rm=TRUE)
 median(REPW1Data_df_Imputted_Sum_By_Date$steps, na.rm=TRUE)
